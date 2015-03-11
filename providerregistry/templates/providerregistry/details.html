@@ -13,11 +13,11 @@
     <title>{{enumeration.basic.first_name}} {{enumeration.basic.last_name}} {{enumeration.basic.organization_name}}</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{{ STATIC_URL }}stylish-portfolio/css/bootstrap.css" rel="stylesheet">
+    <link href="{% static 'providerregistry/stylish-portfolio/css/bootstrap.css' %}" rel="stylesheet">
 
     <!-- Add custom CSS here -->
-    <link href="{{ STATIC_URL }}stylish-portfolio/css/stylish-portfolio.css" rel="stylesheet">
-    <link href="{{ STATIC_URL }}{{e.background}}stylish-portfolio/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{% static 'providerregistry/stylish-portfolio/css/stylish-portfolio.css' %}" rel="stylesheet">
+    <link href="{% static 'providerregistry/stylish-portfolio/font-awesome/css/font-awesome.min.css' %}" rel="stylesheet">
 
     <style>
       .header {
@@ -27,7 +27,7 @@
         position: relative;
 
         {% if not enumeration.background_image %}
-          background: url({{ STATIC_URL }}stylish-portfolio/img/stock-bgs/{{random_bg_image}}) no-repeat center center fixed;
+          background: url({% static 'providerregistry/stylish-portfolio/img/stock-bgs/'%}{{random_bg_image}}) no-repeat center center fixed;
         {% else %}
           background: url({{ MEDIA_URL }} {{ enumeration.background_image }}) no-repeat center center fixed;
         {% endif %}
@@ -214,8 +214,8 @@
     <!-- /Footer -->
 
     <!-- JavaScript -->
-    <script src="{{ STATIC_URL }}stylish-portfolio/js/jquery-1.10.2.js"></script>
-    <script src="{{ STATIC_URL }}stylish-portfolio/js/bootstrap.js"></script>
+    <script src="{% static 'providerregistry/tylish-portfolio/js/jquery-1.10.2.js'%}"></script>
+    <script src="{% static 'providerregistry/stylish-portfolio/js/bootstrap.js'%}"></script>
 
     <!-- Custom JavaScript for the Side Menu and Smooth Scrolling -->
     <script>
