@@ -8,15 +8,13 @@ from forms import ProviderLookupForm, ProviderSearchForm
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 import random, urllib, json
-from ..utils import query_mongo
 from utils import (check_if_resource_exists, get_resource, hash_gravatar_email,
-                    get_gravatar_url, googlemap_address_query)
+                    get_gravatar_url, googlemap_address_query, query_mongo)
 from models import NameAlias
 from django.http import HttpResponse
 
 
 def index(request):
-    
     context= {'npi_lookup_form': ProviderLookupForm()}
     return render(request, 'providerregistry/index.html', context)
 
@@ -141,11 +139,9 @@ def search_results_table(request, skip=0, limit=100):
                     aliases = NameAlias.objects.filter(name=v)
                     alist =[v,]
                     for a in aliases:
-                        print "here"
                         alist.append(a.alias)
-                        print alist
                     query[k] = {"$in": alist }
-                    print "QUERY", query
+                    #print "QUERY", query
  
             else:
                 #First name not given
@@ -223,7 +219,7 @@ def search_results_gallery(request, skip=0, limit=20):
             
     #only get Active results
     query["basic.status"]="A"
-    print query
+    #print query
     #query_mongo
     results = query_mongo(query=query, skip=skip, limit=limit) 
     

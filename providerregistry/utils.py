@@ -3,10 +3,15 @@
 # Written By Alan Viars
 
 import requests
-import json
+import json, sys
 from django.conf import settings
 import urllib, hashlib
 import collections
+from bson.code import Code
+from pymongo import Connection, DESCENDING
+from bson.objectid import ObjectId
+from pymongo import MongoClient
+
 
 
 def hash_gravatar_email(email):
@@ -50,3 +55,52 @@ def get_gravatar_url(hashed_email):
     gravatar_url += urllib.urlencode({'d':default, 's':str(size), 'r':'g'})
     return gravatar_url
     
+def query_mongo(query={}, database_name=settings.MONGO_DB_NAME,
+                collection_name=settings.MONGO_MASTER_COLLECTION,
+                skip=0, sort=None, limit=settings.MONGO_LIMIT, return_keys=()):
+    """return a response_dict  with a list of search results"""
+    print query    
+    
+    l=[]
+    response_dict={}
+    
+    try:
+        mc =   MongoClient(host=settings.MONGO_HOST,
+                           port=settings.MONGO_PORT)
+        
+        db          =   mc[str(database_name)]
+        collection   = db[str(collection_name)]
+        
+        
+        #print query
+        if return_keys:
+            return_dict={}
+            for k in return_keys:
+                return_dict[k]=1
+            #print "returndict=",return_dict
+            mysearchresult=collection.find(query, return_dict).skip(skip).limit(limit)
+        else:            
+            mysearchresult=collection.find(query).skip(skip).limit(limit)
+        
+        if sort:
+            mysearchresult.sort(sort)
+
+        response_dict['num_results']=int(mysearchresult.count(with_limit_and_skip=False))
+        response_dict['code']=200
+        response_dict['type']="search-results"
+        for d in mysearchresult:
+            d['id'] = d['_id'].__str__()
+            del d['_id']
+            l.append(d)
+        response_dict['results']=l
+            
+    except:
+        print "Error reading from Mongo"
+        print str(sys.exc_info())
+        response_dict['num_results']=0
+        response_dict['code']=500
+        response_dict['type']="Error"
+        response_dict['results']=[]
+        response_dict['message']=str(sys.exc_info())
+    
+    return response_dict
