@@ -1,0 +1,6 @@
+*.pyc
+*.o
+dist/
+*.~
+*.kpf
+*.komodoproject
