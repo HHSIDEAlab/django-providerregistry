@@ -4,3 +4,4 @@ dist/
 *.~
 *.kpf
 *.komodoproject
+*.egg-info/
