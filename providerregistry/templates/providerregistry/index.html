@@ -1,0 +1,52 @@
+{% extends "providerregistry/base.html" %}
+{% load i18n %}
+{% block Content %}
+
+    <div class="container">
+
+      <div class="row">
+
+        <div class="col-lg-12">
+          <h1 class="page-header">Hello <small>Welcome to the Provider Registry</small></h1>
+        </div>
+
+      </div>
+      
+      <div class="row">
+
+        <div class="col-lg-12">
+	  
+<div class="row">
+    <div class="col-lg-10">
+      {% include "include/messages.html" %}
+    
+      <div class="row">
+        <div class="col-lg-12">
+	  <ol class="breadcrumb">
+	  <li class="active"><a href="/">Home</a></li>
+	</ol>
+        </div>
+      </div>
+    
+  <div class="row">
+    <div class="col-lg-6">     
+      <a href=provider-lookup><button type="button" class="btn btn-primary btn500">Lookup a Provider by Enumeration Number (i.e. NPI)</button></a>
+</div>
+</div>
+ <br>
+   <div class="row">
+   
+	<div class="col-lg-6"> 
+	  <a href=provider-search ><button type="button" class="btn btn-primary btn500">Search the Provider Registry</button></a>
+          </div>
+
+      </div>    
+      
+ 
+  <hr>
+    </div><!-- /.container -->
+ 
+ 
+  
+{% endblock %}
+

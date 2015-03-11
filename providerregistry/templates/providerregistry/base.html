@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+<html lang="en">
+<head>
+
+
+	{% load i18n %}
+        <title>
+        {% block pretitle %}Provider Registryyyy{%  endblock %}
+        {% block title %} {% endblock %}
+        </title>
+	
+    {% block head %}
+        {% include "providerregistry/include/head.html" %}
+    {% endblock %}
+
+    {% block extra_head %}
+    {% endblock %}
+    
+
+</head>
+<body>
+      
+        {% include "providerregistry/include/top-nav.html" %}
+     
+
+      {% block Content %}
+        {% if template %}{% include template %}{% endif %}
+        {{ content|safe }}
+      {% endblock %}
+    
+                        
+        {% include "providerregistry/include/footer.html" %}
+    <!-- JavaScript -->
+    <script src="{% static 'providerregistry/modern-business/js/jquery-1.11.0.js' %}"></script>
+    <script src="{% static 'providerregistry/modern-business/js/bootstrap.js' %}"></script>
+    {% block ExtraJSFoot %}
+	
+	{% endblock %}
+	
+    
+</body>
+
+</html>

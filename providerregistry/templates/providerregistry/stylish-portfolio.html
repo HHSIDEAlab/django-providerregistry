@@ -1,0 +1,395 @@
+{% load static %}
+{% get_static_prefix as STATIC_PREFIX %}
+<html lang="en">
+  <head>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{{enumeration.basic.first_name}} {{enumeration.basic.last_name}} {{enumeration.basic.organization_name}}</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{{ STATIC_URL }}stylish-portfolio/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Add custom CSS here -->
+    <link href="{{ STATIC_URL }}stylish-portfolio/css/stylish-portfolio.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}{{e.background}}stylish-portfolio/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+
+    <style>
+      .header {
+        display: table;
+        height: 100%;
+        width: 100%;
+        position: relative;
+
+        {% if not enumeration.background_image %}
+          background: url({{ STATIC_URL }}stylish-portfolio/img/stock-bgs/{{random_bg_image}}) no-repeat center center fixed;
+        {% else %}
+          background: url({{ MEDIA_URL }} {{ enumeration.background_image }}) no-repeat center center fixed;
+        {% endif %}
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+      }
+    </style>
+
+   </head>
+
+  <body>
+
+    <!-- Side Menu -->
+    <a id="menu-toggle" href="#" class="btn btn-primary btn-lg toggle"><i class="fa fa-bars"></i></a>
+    <div id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <a id="menu-close" href="#" class="btn btn-default btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+        <li class="sidebar-brand"><a href="/">Provider Registry</a></li>
+        <li><a href="#top">Back to Top</a></li>
+        <li><a href="#directions">Map</a></li>
+        <li><a href="/registry/provider-details/{{enumeration.number}}">Details</a></li>
+        <li><a target="_blank" href="{{PROVIDER_STATIC_HOST}}npi/{{enumeration.number}}.json">JSON (Machine Readable)</a></li>
+      </ul>
+    </div>
+    <!-- /Side Menu -->
+
+    <!-- Full Page Image Header Area -->
+    <div id="top" class="header">
+      
+      <div class="text">
+        
+        
+        <br><br>
+        <div class="container well span6">
+          <div class="row-fluid">
+            
+            
+            <div class="col-sm-2 col-md-2">
+              <img src="{{gravatar_url}}" class="img-circle"
+              alt="" class="img-rounded img-responsive" />
+            </div>
+        
+            <div class="col-sm-4 col-md-4">
+              <blockquote>
+                  <p>{{ enumeration.basic.name_prefix}} {{enumeration.basic.first_name}} {{enumeration.basic.middle_name}} {{enumeration.basic.last_name}}
+                  {{enumeration.basic.organization_name}}{{enumeration.basic.name_suffix}} {% if enumeration.basic.credential %} {{enumeration.basic.credential }}{% endif %}</p>
+					{%if enumeration.enumeration_type == 'NPI-1' %}
+							Gender: 
+							{%if enumeration.basic.gender == 'M' %}
+								MALE
+							{%else%}
+								FEMALE
+							{% endif %}
+							<br>
+							Sole Proprietor:   {{ enumeration.basic.sole_proprietor}} 
+							
+					{% endif %}
+				  
+				  {% if enumeration.bio_headline %}<small><cite title="Source Title">{{enumeration.bio_headline}}</cite></small>{% endif %} 
+              </blockquote>
+              <p>
+                <i class="glyphicon glyphicon-user"></i> {{enumeration.enumeration_type}}: {{enumeration.number}}
+                  <br/>
+                {%if enumeration.basic.website %}
+                <i class="glyphicon glyphicon-globe"></i> <a target=_blank href="{{enumeration.basic.website}}">{{enumeration.basic.website}}</a>
+                  <br />
+                  {% endif %}
+                  <i class="glyphicon glyphicon-calendar"></i> Last Updated: {{enumeration.basic.last_updated}}</p>
+            </div>
+     
+         </div>
+
+
+         <div class="row"></div>
+
+
+         <div class="row">
+            
+            <h1>Summary</h1>  
+            <table class="table table-striped table-bordered">
+            
+            
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            
+            <tr>
+				<td>Enumeration Number</td>
+              <td>{{enumeration.number}} ({{enumeration.enumeration_type}})</td>
+            </tr>
+             <tr>
+				<td>Enumeration Date</td>
+              <td>{{enumeration.basic.enumeration_date}}</td>
+            </tr>
+			<tr>
+				<td>Entity Type</td>
+              <td>
+					  {%if enumeration.enumeration_type == 'NPI-1' %}
+							1 - Individual
+					{% else%}
+							2- Organization
+					{% endif %}
+			 </td>
+            </tr>
+			 {%if enumeration.enumeration_type == 'NPI-2' %}
+				<tr>
+					<td>Authorized Official Information</td>
+					<td>
+					
+						 Name:  {{enumeration.basic.authorized_official_name_prefix}}
+						 {{enumeration.basic.authorized_official_first_name}}
+						 {{enumeration.basic.authorized_official_middle_name}}  
+						 {{enumeration.basic.authorized_official_last_name}}
+						 {{enumeration.basic.authorized_official_credential}}
+						 <br>
+						 Title: {{enumeration.basic.authorized_official_title_or_position}}<br>
+						 Phone: {{enumeration.basic.authorized_official_telephone_number}}
+					
+					</td>
+					
+				</tr>
+			
+			 {% endif %}
+            <tr>
+              <td>Status</td>
+              
+              <td>
+                {% if enumeration.basic.status == "A" %}
+                     Active
+                {% else%}
+                    Deactive
+                {% endif %}
+              
+              </td>
+            </tr>
+            
+            
+            {% if enumeration.specialty %}
+            <tr>
+              <td>Specialty</td>
+              <td>{{enumeration.specialty}}
+              </td>
+            </tr>
+            
+            {% endif %}
+            
+            
+            <tr>
+              <td>Licenses</td>
+              <td>{% for l in enumeration.licenses %}
+					State:	{{l.state}} License Number: {{l.code}} 
+                 {% endfor %}
+              </td>
+            </tr>
+            
+            
+             <tr>
+              <td>Mailing Address</td>
+              <td> {% for a in enumeration.addresses %}
+						
+						{% if a.address_purpose == "MAILING"%}
+							
+                                {{a.address_1}}
+								{{a.address_2}}
+								<br>
+								{{a.city}}, {{a.state}} {{a.zip}}<br><br>
+                                Phone: {{a.us_telephone_number}} | 
+								Fax: {{a.us_fax_number}}
+              
+								
+								
+                           {% endif %}
+					 {% endfor %}
+			  
+              
+              </td>
+            </tr>
+            
+            <tr>
+              <td>Primary Practice Address</td>
+              <td> {% for a in enumeration.addresses %}
+						
+						{% if a.address_purpose == "LOCATION"%}
+							
+                                {{a.address_1}}
+								{{a.address_2}}
+								<br>
+								{{a.city}}, {{a.state}} {{a.zip}}<br><br>
+                                Phone: {{a.us_telephone_number}} | 
+								Fax: {{a.us_fax_number}}
+              
+								
+								
+                           {% endif %}
+					 {% endfor %}
+			  
+              
+              </td>
+              
+              </td>
+            </tr>
+             <tr>
+              <td>Taxonomy</td>
+              <td>
+					
+				{% for t in enumeration.taxonomies %}
+					{% if t.primary %}
+						{{t.code}}  - {{t.desc}} <strong>(Primary)</strong><br><br>
+					 {% endif %}
+              {% endfor %}
+              {% for t in enumeration.taxonomies %}
+					{% if not t.primary %}
+						{{t.code}} - {{t.desc}} <br>
+					 {% endif %}
+              {% endfor %}
+              </td>
+            </tr>
+            
+            <tr>
+              <td>Other Identifiers</td>
+              <td>
+				<table class="table table-striped table-bordered">
+					<thead>
+						<th>Issuer</th>
+						<th>Number</th>
+						<th>State</th>
+					</thead>
+				{% for i in enumeration.identifiers %}
+					<tr>
+						<td>{{i.code}}</td>
+						<td>{{i.identifier}}</td>
+						<td>{{i.state}} </td>
+					</tr>
+				
+				{% endfor %}
+				</table>
+              </td>
+            </tr>
+            
+            
+            
+            
+            
+            
+          
+            
+            </table>
+          
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+      </div>
+        
+      </div>
+    </div>
+    <!-- /Full Page Image Header Area -->
+
+
+
+    <!-- Map -->
+    <div id="directions" class="map">
+      <iframe width="100%" height="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q={{googlemap_q}}&amp;aq=0&amp;ie=UTF8&amp;hq={{enumeration.google_map_q}}&amp;t=m&amp;z=15&amp;iwloc=A&amp;output=embed"></iframe><br /><small><a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q={{enumeration.google_map_q}}&amp;aq=0&amp;ie=UTF8&amp;hq={{enumeration.google_map_q}}&amp;t=m&amp;z=15&amp;iwloc=A"></a></small></iframe>
+    </div>
+    <!-- /Map -->
+
+    <!-- Additional Directions -->
+    <div class="call-to-action">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3 text-center">
+            <h3>NOTE: This may not be the address you are seeking. Health
+          care providers often practice at multiple locations. CMS may not
+          have the latest information on file within NPPES.</h3>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /Additional Directions-->
+
+
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-3 text-center">
+            <ul class="list-inline">
+
+              {% if enumeration.basic.website %}
+                <li><a target="_blank" href="{{enumeration.basic.website}}"><i class="fa fa-dribbble fa-3x"></i></a></li>
+              {% endif %}
+
+              {% if enumeration.basic.facebook_handle %}
+               <li><a href="https://www.facebook.com/{{enumeration.basic.facebook_handle}}"><i class="fa fa-facebook fa-3x"></i></a></li>
+              {% endif %}
+
+              {% if enumeration.basic.twitter_handle %}
+                <li><a target="_blank" href="http://twitter.com/{{enumeration.basic.twitter_handle}}"><i class="fa fa-twitter fa-3x"></i></a></li>
+              {% endif %}
+            </ul>
+            <div class="top-scroll">
+              <a href="#top"><i class="fa fa-circle-arrow-up scroll fa-4x"></i></a>
+            </div>
+            <a href="#" class="btn btn-lg btn-default">Back to Top</a>
+            <hr>
+            <p><a href="http://cms.hhs.gov" target="_blank">Centers for Medicare and Medicaid Services </a> |
+            <a href="http://hhs.gov" target="_blank">Health and Human Services </a>
+
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- /Footer -->
+
+    <!-- JavaScript -->
+    <script src="{{ STATIC_URL }}stylish-portfolio/js/jquery-1.10.2.js"></script>
+    <script src="{{ STATIC_URL }}stylish-portfolio/js/bootstrap.js"></script>
+
+    <!-- Custom JavaScript for the Side Menu and Smooth Scrolling -->
+    <script>
+        $("#menu-close").click(function(e) {
+            e.preventDefault();
+            $("#sidebar-wrapper").toggleClass("active");
+        });
+    </script>
+    <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#sidebar-wrapper").toggleClass("active");
+        });
+    </script>
+    <script>
+      $(function() {
+        $('a[href*=#]:not([href=#])').click(function() {
+          if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'')
+            || location.hostname == this.hostname) {
+
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+            if (target.length) {
+              $('html,body').animate({
+                scrollTop: target.offset().top
+              }, 1000);
+              return false;
+            }
+          }
+        });
+      });
+    </script>
+
+  </body>
+
+</html>

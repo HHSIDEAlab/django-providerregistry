@@ -1,0 +1,127 @@
+{% extends "providerregistry/base.html" %}
+{% load i18n %}
+{% block Content %}
+
+<div class="container">
+
+
+
+ <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Results:
+                    <small>{{skip|add:"1"}} -
+                    {% if skip|add:"12" <= total  %}
+                        {{skip|add:"12"}}
+                    {%else%}
+                        {{total}}
+                    {%endif%}
+                      out of {{total}}.</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a>
+                    </li>
+                    <li><a href="/registry/provider-search">Search</a>
+                    </li>
+                    <li class="active">Results</li>
+                    <li><a href="{{table_url}}&skip={{skip}}">Table View</a>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+       <!-- Team Members -->
+        <div class="row">
+           {%for r in results %}
+            <div class="col-md-3 text-center">
+                <div class="thumbnail">
+                    <img class="img-responsive"
+                        {% if r.basic.gender == "M" %} 
+                            src="{{STATIC_URL}}registry/img/Male250.jpg" alt="Male Provider">
+                        {% endif %}
+                        
+                        {% if r.basic.gender == "F" %}
+                            src="{{STATIC_URL}}registry/img/Female250.jpg" alt="Female Provider">
+                         {% endif %} 
+                        {% if not r.basic.gender %}
+                            src="{{STATIC_URL}}registry/img/Organization250.jpg" alt="Organization Provider"> 
+                         {% endif %}    
+                    <div class="caption">
+                        
+                        <h3>
+                            <a href = "/registry/provider-view/{{r.number}}">{{r.number}}</a><br>
+                            <small>{{r.title|truncatechars:19}}</small>
+                        </h3>
+
+                    
+                        <ul class="list-inline">
+                            
+                            {% if r.enumeration_type == "NPI-2" or r.basic.sole_proprietor == "YES" %}
+                    
+                             <li><i class="fa fa-2x fa-hospital-o" title="Organization"></i>
+                              </li>
+                           {% endif %}
+                           
+                           {% if r.enumeration_type == "NPI-1" %}
+                             <li><i class="fa fa-2x fa-user-md" title="Individual"></i>
+                              </li>
+                           {% endif %}
+                           
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+        {% endfor %}
+
+
+           
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Pagination -->
+        <div class="row text-center">
+            <div class="col-lg-12">
+               <nav>
+                    <ul class="pager">
+                      <li
+                          {% if skip == 0 %}
+                          
+                          {% endif%}
+                          class="previous
+                           
+                           {% if skip == 0 %}
+                             disabled
+                          {% endif%}
+                          ">
+            
+                          <a href="{{reg_url}}&skip={{skip|add:"-12"}}">&larr; Back</a>
+                      </li>
+                      <li class="next
+                       {% if skip|add:"12" > total %}
+                             disabled
+                          {% endif%}
+                      "><a href="{{reg_url}}&skip={{skip|add:"12"}}">More &rarr;</a></li>
+                    </ul>
+                  </nav>
+            </div>
+            
+        <div class="row text-center">
+            <div class="col-lg-12">
+               <a href=/registry/provider-search ><button type="button" class="btn btn-primary btn-lg">Start a New Search</button></a>
+          </div>
+            </div>    
+            
+            
+        </div>
+        <!-- /.row -->
+
+    
+    </div><!-- /.container -->
+ 
+ 
+  
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "providerregistry/base.html" %}
+{% load i18n %}
+{% block Content %}
+
+<div class="container">
+
+
+
+ <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Results:
+                    <small>{{skip|add:"1"}} -
+                    {% if skip|add:"100" <= total  %}
+                        {{skip|add:"100"}}
+                    {%else%}
+                        {{total}}
+                    {%endif%}
+                      out of {{total}}.</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="/">Home</a>
+                    </li>
+                    <li><a href="/registry/provider-search">Search</a>
+                    </li>
+                    <li><a href="{{reg_url}}&skip={{skip}}">Results</a></li>
+                    <li class="active">Table View </li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+        
+        <!-- Content Row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Number</th>
+                      <th>Name</th>
+                      <th>Enumeration Type</th>
+                      <th>Primary Practice Address</th>
+                      <th>Phone</th>
+                      <th>Fax</th>
+                      <th>Primary Taxonomy</th>
+                    </tr>
+                    </thead>
+                {% for r in results %}
+                     <tr>
+                      <th><a href="/registry/provider-view/{{r.number}}">{{r.number}}</a></th>
+                      <th>{{r.basic.first_name}} {{r.basic.last_name}} {{r.basic.organization_name}}</th>
+                      <th>{{r.enumeration_type}}</th>
+                      {% for a in r.addresses %}
+                           {% if a.address_purpose == "LOCATION"%}
+                                <th>{{a.address_1}} {{a.address_2}} {{a.city}}, {{a.state}} {{a.zip}}</th>
+                                <th>{{a.us_telephone_number}}</th>
+                                <th>{{a.us_fax_number}}</th>
+                           {% endif %}
+                      {% endfor %}
+                      {% for t in r.taxonomies %}
+                           {% if t.primary %}
+                               <th>{{t.code}}</th>
+                           {% endif %}
+                       {% endfor %}
+                    </tr>
+                    
+                    
+                   
+                {% endfor %}    
+                    
+  
+                </table>
+                
+                
+                
+            </div>
+        </div>
+        <!-- /.row -->
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <hr>
+
+        <!-- Pagination -->
+        <div class="row text-center">
+            <div class="col-lg-12">
+               <nav>
+                    <ul class="pager">
+                      <li
+                          {% if skip == 0 %}
+                          
+                          {% endif%}
+                          class="previous
+                           
+                           {% if skip == 0 %}
+                             disabled
+                          {% endif%}
+                          "><a href="{{table_url}}&skip={{skip|add:"-100"}}">&larr; Back</a></li>
+                      <li class="next
+                       {% if skip|add:"100" > total %}
+                             disabled
+                          {% endif%}
+                      "><a href="{{table_url}}&skip={{skip|add:"100"}}">More &rarr;</a></li>
+                    </ul>
+                  </nav>
+            </div>
+            
+        <div class="row text-center">
+            <div class="col-lg-12">
+               <a href=/registry/provider-search ><button type="button" class="btn btn-primary btn-lg">Start a New Search</button></a>
+          </div>
+            </div>    
+            
+            
+        </div>
+
+    
+    </div><!-- /.container -->
+ 
+ 
+  
+{% endblock %}
