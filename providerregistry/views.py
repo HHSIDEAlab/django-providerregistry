@@ -166,7 +166,10 @@ def search_results_table(request, skip=0, limit=100):
     query["basic.status"]="A"
         
     #query_mongo
-    results = query_mongo(query=query, skip=skip, limit=limit) 
+    results = query_mongo(database_name="nppes",
+                          collection_name="pjson",
+                          query=query,
+                          skip=skip, limit=limit) 
     reg_url = reverse('search_results_gallery') + "?" + urllib.urlencode(request.GET.items())
     table_url = reverse('search_results_table') + "?" + urllib.urlencode(request.GET.items())    
         
