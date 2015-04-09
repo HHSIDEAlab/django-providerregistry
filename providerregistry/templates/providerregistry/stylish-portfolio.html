@@ -46,10 +46,10 @@
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <a id="menu-close" href="#" class="btn btn-default btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
-        <li class="sidebar-brand"><a href="/">Provider Registry</a></li>
+        <li class="sidebar-brand"><a href="/">NPI Registry</a></li>
         <li><a href="#top">Back to Top</a></li>
         <li><a href="#directions">Map</a></li>
-        <li><a href="/registry/provider-details/{{enumeration.number}}">Details</a></li>
+        <li><a href="{% url 'provider_details' enumeration.number %}">Details</a></li>
         <li><a target="_blank" href="{{PROVIDER_STATIC_HOST}}npi/{{enumeration.number}}.json">JSON (Machine Readable)</a></li>
       </ul>
     </div>
@@ -119,7 +119,7 @@
             </thead>
             
             <tr>
-				<td>Enumeration Number</td>
+	    <td>Enumeration Number</td>
               <td>{{enumeration.number}} ({{enumeration.enumeration_type}})</td>
             </tr>
              <tr>

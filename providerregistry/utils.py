@@ -8,9 +8,8 @@ from django.conf import settings
 import urllib, hashlib
 import collections
 from bson.code import Code
-from pymongo import Connection, DESCENDING
+from pymongo import MongoClient, DESCENDING
 from bson.objectid import ObjectId
-from pymongo import MongoClient
 
 
 
@@ -55,8 +54,7 @@ def get_gravatar_url(hashed_email):
     gravatar_url += urllib.urlencode({'d':default, 's':str(size), 'r':'g'})
     return gravatar_url
     
-def query_mongo(query={}, database_name=settings.MONGO_DB_NAME,
-                collection_name=settings.MONGO_MASTER_COLLECTION,
+def query_mongo(database_name, collection_name, query={},
                 skip=0, sort=None, limit=settings.MONGO_LIMIT, return_keys=()):
     """return a response_dict  with a list of search results"""
     print query    

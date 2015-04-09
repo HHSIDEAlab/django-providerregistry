@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-providerregistry',
-    version='0.4',
+    version='0.5.3',
     packages=['providerregistry'],
     include_package_data=True,
     license='Public Domain',  
@@ -19,7 +19,8 @@ setup(
     author='Alan Viars',
     author_email='alan.viars@cms.hhs.gov',
     install_requires=[
-        'pymongo', ],
+        'pymongo', 'requests', 'django-localflavor',
+        'django-bootstrap-form', 'django-djmongo'],
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
