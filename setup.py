@@ -9,7 +9,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-providerregistry',
-    version='0.5.1',
+    version='0.5.3',
     packages=['providerregistry'],
     include_package_data=True,
     license='Public Domain',  
