@@ -1,7 +1,7 @@
 {% extends "providerregistry/base.html" %}
 {% load i18n %}
 {% block Content %}
-
+{% load static %}
 <div class="container">
 
 
@@ -9,15 +9,7 @@
  <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Results:
-                    <small>{{skip|add:"1"}} -
-                    {% if skip|add:"12" <= total  %}
-                        {{skip|add:"12"}}
-                    {%else%}
-                        {{total}}
-                    {%endif%}
-                      out of {{total}}.</small>
-                </h1>
+                <h1 class="page-header">Search Results</h1>
                 <ol class="breadcrumb">
                     <li><a href="/">Home</a>
                     </li>
@@ -38,14 +30,14 @@
                 <div class="thumbnail">
                     <img class="img-responsive"
                         {% if r.basic.gender == "M" %} 
-                            src="{{STATIC_URL}}registry/img/Male250.jpg" alt="Male Provider">
+                            src="{% static 'providerregistry/img/Male250.jpg' %}" alt="Male Provider">
                         {% endif %}
                         
                         {% if r.basic.gender == "F" %}
-                            src="{{STATIC_URL}}registry/img/Female250.jpg" alt="Female Provider">
+                            src="{% static 'providerregistry/img/Female250.jpg' %}" alt="Female Provider">
                          {% endif %} 
                         {% if not r.basic.gender %}
-                            src="{{STATIC_URL}}registry/img/Organization250.jpg" alt="Organization Provider"> 
+                            src="{% static 'providerregistry/img/Organization250.jpg' %}" alt="Organization Provider"> 
                          {% endif %}    
                     <div class="caption">
                         
@@ -100,11 +92,7 @@
             
                           <a href="{{reg_url}}&skip={{skip|add:"-12"}}">&larr; Back</a>
                       </li>
-                      <li class="next
-                       {% if skip|add:"12" > total %}
-                             disabled
-                          {% endif%}
-                      "><a href="{{reg_url}}&skip={{skip|add:"12"}}">More &rarr;</a></li>
+                      <li class="next"><a href="{{reg_url}}&skip={{skip|add:"12"}}">More &rarr;</a></li>
                     </ul>
                   </nav>
             </div>

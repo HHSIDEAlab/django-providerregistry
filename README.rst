@@ -14,36 +14,39 @@ Quick Start
 
 1. Install MongoDB according to http://docs.mongodb.org/manual/installation/
 
-   
+2. Download and import the NPPES Public Data into MongoDB.
 
-2. Pip install django-providerregistry and prerequisites::
+You can use the script "loadnppes.py", part of to do this for you in one big
+step.  loadnppes.py is part of the provider-data-tools package.
+   
+3. Pip install django-providerregistry and prerequisites::
 
     pip install pymongo django-providerregistry
 
 
-3. Add "providerregistry" to your INSTALLED_APPS setting like this::
+4. Add "providerregistry" to your INSTALLED_APPS setting like this::
 
     INSTALLED_APPS = (
         ...
         'providerregistry',
     )
 
-4. Include the direct URLconf in your project urls.py like this::
+5. Include the direct URLconf in your project urls.py like this::
 
     url(r'^registry/', include('providerregistry.urls')),
 
-5. Create the models that contain informationto help with searching::
+6. Create the models that contain informationto help with searching::
 
     python manage.py syncdb
 
-6. Collect static content::
+7. Collect static content::
 
     python manage.py collectstatic
 
-7. Start the development server::
+8. Start the development server::
 
     python manage.py runserver
 
-8. Point your browser to htpp://127.0.0.1:8000/registry
+9. Point your browser to htpp://127.0.0.1:8000/registry
 
 

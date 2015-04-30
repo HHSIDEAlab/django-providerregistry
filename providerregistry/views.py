@@ -177,7 +177,7 @@ def search_results_table(request, skip=0, limit=100):
               "results":results["results"][:page_limit],
               "reg_url":reg_url,
               "table_url":table_url,
-              "total": results["num_results"], "skip":skip, "limit":limit}
+              "skip":skip, "limit":limit}
     
     return render(request, 'providerregistry/search-results-table.html', context)
 
@@ -224,13 +224,14 @@ def search_results_gallery(request, skip=0, limit=20):
     query["basic.status"]="A"
     #print query
     #query_mongo
-    results = query_mongo(query=query, skip=skip, limit=limit) 
+    results = query_mongo(database_name="nppes", collection_name="pjson",
+                          query=query, skip=skip, limit=limit) 
     
     reg_url = reverse('search_results_gallery') + "?" + urllib.urlencode(request.GET.items())
     table_url = reverse('search_results_table') + "?" + urllib.urlencode(request.GET.items())    
     context= {"name":name,"results":results["results"][:page_limit],
               "reg_url":reg_url,
               "table_url":table_url,
-              "total": results["num_results"], "skip":skip, "limit":limit
+              "skip":skip, "limit":limit
               }
     return render(request, 'providerregistry/search-results.html', context)

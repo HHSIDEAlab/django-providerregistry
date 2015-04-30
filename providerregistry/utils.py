@@ -83,7 +83,6 @@ def query_mongo(database_name, collection_name, query={},
         if sort:
             mysearchresult.sort(sort)
 
-        response_dict['num_results']=int(mysearchresult.count(with_limit_and_skip=False))
         response_dict['code']=200
         response_dict['type']="search-results"
         for d in mysearchresult:
@@ -95,7 +94,6 @@ def query_mongo(database_name, collection_name, query={},
     except:
         print "Error reading from Mongo"
         print str(sys.exc_info())
-        response_dict['num_results']=0
         response_dict['code']=500
         response_dict['type']="Error"
         response_dict['results']=[]

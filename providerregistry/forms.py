@@ -85,7 +85,7 @@ class ProviderSearchForm(forms.Form):
                              help_text ="Check this box to find partial matches.")
     
     display             = forms.ChoiceField(required=True, choices = DISPLAY_CHOICES,
-                            initial="TABLE",
+                            initial="GALLERY",
                             help_text = "Display search results in gallery or table format.",
                             label="Results Display Options")               
     
