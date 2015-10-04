@@ -9,18 +9,18 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 setup(
     name='django-providerregistry',
-    version='0.5.5',
-    packages=['providerregistry'],
+    version='0.5.8',
+    packages=['providerregistry', 'providerregistry.templatetags'],
     include_package_data=True,
     license='Public Domain',  
     description='A simple Django application that provides a UI and RESTFul API for read only access to NPPES data.',
     long_description=README,
     url='https://github.com/hhsidealab/django-providerregistry',
     author='Alan Viars',
-    author_email='alan.viars@cms.hhs.gov',
+    author_email='sales@videntity.com',
     install_requires=[
         'pymongo', 'requests', 'django-localflavor',
-        'django-bootstrap-form', 'django-djmongo'],
+        'django-bootstrap-form', 'django-djmongo', 'pdt'],
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
