@@ -40,18 +40,12 @@ class ProviderLookupForm(forms.Form):
             raise forms.ValidationError("You must supply a number containing exactly 10 digits.")
         
         if not vnpi.verify_npi(number):
-	    raise forms.ValidationError("This enumeration does not appear to be a valid NPI number.")
+            raise forms.ValidationError("This enumeration does not appear to be a valid NPI number.")
 
-        http_status = check_if_resource_exists(number)
-        
-        if http_status == 403:
+        r = get_resource(str(number))
+
+        if not r:
             raise forms.ValidationError("This enumeration number is not in the public registry.")
-        
-        if http_status == 500:
-            raise forms.ValidationError("The public registry appears to be offline. Please ty again later.")
-        
-        if http_status == 000:
-            raise forms.ValidationError("The public registry appears to be offline. Please ty again later.")
         
         return number
         
@@ -101,15 +95,15 @@ class ProviderSearchForm(forms.Form):
 
     
     def save(self):
-	d = { "enumeration_type": self.cleaned_data.get("enumeration_type"),
-	     "basic.first_name": self.cleaned_data.get("first_name"),
+        d = { "enumeration_type": self.cleaned_data.get("enumeration_type"),
+             "basic.first_name": self.cleaned_data.get("first_name"),
              "basic.last_name": self.cleaned_data.get("last_name"),
              "basic.organization_name": self.cleaned_data.get("organization_name"),
              "basic.doing_business_as" :self.cleaned_data.get("doing_business_as"),           
              "addresses.city"     :self.cleaned_data.get("city"),        
              "addresses.state"   :self.cleaned_data.get("state"),         
-	     "addresses.zip"    :self.cleaned_data.get("zip_code"),
-	     "affiliations.endpoint"  :self.cleaned_data.get("direct_address"),
+             "addresses.zip"    :self.cleaned_data.get("zip_code"),
+             "affiliations.endpoint"  :self.cleaned_data.get("direct_address"),
              "regex"  : self.cleaned_data.get("find_partial_matches"),
             }
         cleaned_query = {}

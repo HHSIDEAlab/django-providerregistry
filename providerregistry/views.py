@@ -72,7 +72,6 @@ def provider_profile(request, number):
                                           state = location.get("state", ""),
                                           zipcode = location.get("zip", ""),
                                           )
-    print pecos
     context = { "enumeration":     provider,
                 "pecos":           pecos,
                 "random_bg_image": random_background,

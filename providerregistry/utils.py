@@ -35,19 +35,17 @@ def check_if_resource_exists(number, url = settings.PROVIDER_STATIC_HOST):
 
 
 def get_resource(number, database_name="nppes", collection_name="pjson"):
-    
     try:
         mc              = MongoClient(host=settings.MONGO_HOST,
                                       port=settings.MONGO_PORT)
         db              =   mc[str(database_name)]
         collection      = db[str(collection_name)]
         
-        document=collection.find_one({"number": number})
+        document = collection.find_one({"number": number})
     except:
         print "Error reading from Mongo"
         print str(sys.exc_info())
         document = {}
-
     return document
 
 def get_pecos_base(number, database_name="pecos", collection_name="base"):
