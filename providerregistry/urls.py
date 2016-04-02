@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # Written  By Alan Viars
+from django.conf.urls import include, url
 
-from django.conf.urls import patterns, include, url
 from views import *
 
 
-urlpatterns = patterns('',
+urlpatterns = [  
    
     
     url(r'^provider-lookup$', provider_lookup, name="provider_lookup"),
@@ -22,4 +22,4 @@ urlpatterns = patterns('',
     url(r'^search-results$', search_results_gallery, name="search_results_gallery"),
     
     url(r'^$', index, name="registry_index"),
-    )
+    ]
