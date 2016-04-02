@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 import random, urllib, json
 from utils import (check_if_resource_exists, get_resource, hash_gravatar_email,
-                    get_gravatar_url, googlemap_address_query, query_mongo)
+                    get_gravatar_url, googlemap_address_query, query_mongo, get_pecos_base)
 from models import NameAlias
 from django.http import HttpResponse
 
@@ -42,12 +42,17 @@ def provider_lookup(request):
 
 
 def provider_profile(request, number):
-    if check_if_resource_exists(number) != 200:
-        return render(request, 'providerregistry/404.html', {})
+    #if check_if_resource_exists(number) != 200:
+    #    return render(request, 'providerregistry/404.html', {})
     
     random_background = "%s.jpg" % (random.randrange(1,27)) 
     provider          = get_resource(number)
+
+    
     basic             = provider.get("basic", {})
+    
+    pecos = get_pecos_base(number)
+    
     
     #Get Gravatar URL
     gravatar_email    = basic.get('gravatart_email', "")
@@ -67,19 +72,20 @@ def provider_profile(request, number):
                                           state = location.get("state", ""),
                                           zipcode = location.get("zip", ""),
                                           )
-
-    context = { "enumeration":        provider,
+    print pecos
+    context = { "enumeration":     provider,
+                "pecos":           pecos,
                 "random_bg_image": random_background,
-                "gravatar_url": gravatar_url,
-                "googlemap_q": googlemap_q,
+                "gravatar_url":    gravatar_url,
+                "googlemap_q":     googlemap_q,
                 "PROVIDER_STATIC_HOST": settings.PROVIDER_STATIC_HOST
                 }
  
     return render(request, 'providerregistry/stylish-portfolio.html', context)
 
 def provider_details(request, number):
-    if check_if_resource_exists(number) != 200:
-        return render(request, 'providerregistry/404.html', {})
+    #if check_if_resource_exists(number) != 200:
+    #    return render(request, 'providerregistry/404.html', {})
     
     provider          = get_resource(number)
     basic             = provider.get("basic", {})
@@ -91,9 +97,9 @@ def provider_details(request, number):
     gravatar_url      = get_gravatar_url(hash_gravatar_email(gravatar_email))
 
 
-    context = { "enumeration":        provider,
-                "random_bg_image": random_background,
-                "gravatar_url": gravatar_url,
+    context = { "enumeration":          provider,
+                "random_bg_image":      random_background,
+                "gravatar_url":         gravatar_url,
                 "PROVIDER_STATIC_HOST": settings.PROVIDER_STATIC_HOST,
                 }
  
@@ -115,7 +121,6 @@ def provider_search(request):
             else:
                 table_results = reverse('search_results_table') + "?" + urllib.urlencode(query)
                 return HttpResponseRedirect(table_results)
-                
         else:
             context = {"name":name,"form": form}
             return render(request, 'providerregistry/generic/bootstrapform.html', context)

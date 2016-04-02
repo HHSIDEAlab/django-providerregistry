@@ -34,17 +34,39 @@ def check_if_resource_exists(number, url = settings.PROVIDER_STATIC_HOST):
     return status
 
 
-def get_resource(number, url = settings.PROVIDER_STATIC_HOST):
-    provider_url = "%snpi/%s.json" % (url, number)
-    d = collections.OrderedDict()
+def get_resource(number, database_name="nppes", collection_name="pjson"):
+    
     try:
-        r = requests.get(provider_url)
-        #print r.text
-        #print r.json()
-        d = json.loads(r.text, object_pairs_hook=collections.OrderedDict)
-    except requests.ConnectionError:
-        d = collections.OrderedDict()
-    return d
+        mc              = MongoClient(host=settings.MONGO_HOST,
+                                      port=settings.MONGO_PORT)
+        db              =   mc[str(database_name)]
+        collection      = db[str(collection_name)]
+        
+        document=collection.find_one({"number": number})
+    except:
+        print "Error reading from Mongo"
+        print str(sys.exc_info())
+        document = {}
+
+    return document
+
+def get_pecos_base(number, database_name="pecos", collection_name="base"):
+    
+    try:
+        mc              = MongoClient(host=settings.MONGO_HOST,
+                                      port=settings.MONGO_PORT)
+        db              = mc[str(database_name)]
+        collection      = db[str(collection_name)]
+        
+        document=collection.find_one({"NPI": number})
+    except:
+        print "Error reading from Mongo"
+        print str(sys.exc_info())
+        document = {}
+    return document
+
+
+
 
 def get_gravatar_url(hashed_email):
     
@@ -56,8 +78,7 @@ def get_gravatar_url(hashed_email):
     
 def query_mongo(database_name, collection_name, query={},
                 skip=0, sort=None, limit=settings.MONGO_LIMIT, return_keys=()):
-    """return a response_dict  with a list of search results"""
-    print query    
+    """return a response_dict  with a list of search results"""  
     
     l=[]
     response_dict={}

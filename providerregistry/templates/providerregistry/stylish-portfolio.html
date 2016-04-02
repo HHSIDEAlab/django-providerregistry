@@ -84,6 +84,13 @@
 							{% endif %}
 							<br>
 							Sole Proprietor:   {{ enumeration.basic.sole_proprietor}} 
+							<br>
+							Medicare Provider:
+							{%if pecos %}
+							    YES
+							{% else %}
+							    NO
+							{% endif %}
 							
 					{% endif %}
 				  
