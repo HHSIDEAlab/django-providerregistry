@@ -21,5 +21,5 @@ urlpatterns = [
     
     url(r'^search-results$', search_results_gallery, name="search_results_gallery"),
     
-    url(r'^$', index, name="registry_index"),
+    url(r'', index, name="registry_index"),
     ]
